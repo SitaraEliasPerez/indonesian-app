@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
-import api from "../api";
+export default function WordList({ words }) {
+  if (words.length === 0) {
+    return <p className="empty">No words found.</p>;
+  }
 
-export default function WordList() {
-    const [words, setWords] = useState([]);
-
-    useEffect(() => {
-        api.get("/words").then((res) => setWords(res.data));
-    }, []);
-
-
-    return (
-        <ul>
-            {words.map((w) => (
-                <li key={w.id}>{w.indonesian} - {w.english}</li>
-            ))}
-        </ul>
-    );
+  return (
+    <ul className="word-list">
+      {words.map((w) => (
+        <li key={w.id} className="word-item">
+          <span className="indonesian">{w.indonesian}</span>
+          <span className="english">{w.english}</span>
+        </li>
+      ))}
+    </ul>
+  );
 }
