@@ -6,16 +6,7 @@ import os
 
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
-    f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 class Word(db.Model):
     __tablename__ = "words"
@@ -26,25 +17,41 @@ class Word(db.Model):
 
     def to_dict(self):
         return {
-            "id":          self.id,
-            "category":    self.category,
-            "indonesian":  self.indonesian,
-            "english":     self.english,
+            "id":         self.id,
+            "category":   self.category,
+            "indonesian": self.indonesian,
+            "english":    self.english,
         }
 
-@app.route("/api/health")
-def health():
-    return jsonify({"status": "ok", "message": "Selamat datang!"})
+def create_app(db_uri=None):
+    app = Flask(__name__)
+    CORS(app)
 
-@app.route("/api/words")
-def get_words():
-    words = Word.query.all()
-    return jsonify([w.to_dict() for w in words])
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_uri or (
+        f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
+        f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+    )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-@app.route("/api/words/<category>")
-def get_words_by_category(category):
-    words = Word.query.filter_by(category=category).all()
-    return jsonify([w.to_dict() for w in words])
+    db.init_app(app)
+
+    @app.route("/api/health")
+    def health():
+        return jsonify({"status": "ok", "message": "Selamat datang!"})
+
+    @app.route("/api/words")
+    def get_words():
+        words = Word.query.all()
+        return jsonify([w.to_dict() for w in words])
+
+    @app.route("/api/words/<category>")
+    def get_words_by_category(category):
+        words = Word.query.filter_by(category=category).all()
+        return jsonify([w.to_dict() for w in words])
+
+    return app
+
+app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=True)

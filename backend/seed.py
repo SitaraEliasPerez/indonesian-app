@@ -1,4 +1,6 @@
-from app import app, db, Word
+from app import create_app, db, Word
+
+app = create_app()
 
 words = [
     # Basic Phrases
@@ -29,17 +31,17 @@ words = [
     Word(category="numbers", indonesian="sembilan", english="nine"),
     Word(category="numbers", indonesian="sepuluh",  english="ten"),
     # Colors
-    Word(category="colors", indonesian="merah",    english="red"),
-    Word(category="colors", indonesian="biru",     english="blue"),
-    Word(category="colors", indonesian="kuning",   english="yellow"),
-    Word(category="colors", indonesian="hijau",    english="green"),
-    Word(category="colors", indonesian="hitam",    english="black"),
-    Word(category="colors", indonesian="putih",    english="white"),
-    Word(category="colors", indonesian="oranye",   english="orange"),
-    Word(category="colors", indonesian="ungu",     english="purple"),
+    Word(category="colors", indonesian="merah",      english="red"),
+    Word(category="colors", indonesian="biru",       english="blue"),
+    Word(category="colors", indonesian="kuning",     english="yellow"),
+    Word(category="colors", indonesian="hijau",      english="green"),
+    Word(category="colors", indonesian="hitam",      english="black"),
+    Word(category="colors", indonesian="putih",      english="white"),
+    Word(category="colors", indonesian="oranye",     english="orange"),
+    Word(category="colors", indonesian="ungu",       english="purple"),
     Word(category="colors", indonesian="merah muda", english="pink"),
-    Word(category="colors", indonesian="coklat",   english="brown"),
-    Word(category="colors", indonesian="abu-abu",  english="gray"),
+    Word(category="colors", indonesian="coklat",     english="brown"),
+    Word(category="colors", indonesian="abu-abu",    english="gray"),
     # Grammar Particles
     Word(category="grammar particles", indonesian="di",     english="at / in / on (location)"),
     Word(category="grammar particles", indonesian="ke",     english="to (direction)"),
